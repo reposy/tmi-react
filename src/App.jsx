@@ -1,19 +1,49 @@
-// src/App.js
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { increment, decrement, incrementByAmount } from './app/features/counter/counterSlice';
+import { Box, Grid, Typography, Link } from '@mui/material';
+import Filters from './app/components/Filters';
+import LunarDate from './app/components/LunarDate';
+import OilPrices from './app/components/OilPrices';
+import ExchangeRates from './app/components/ExchangeRates';
+import TestControls from './app/components/TestControls';  // 테스트용 컴포넌트 추가
+import { useSelector } from 'react-redux';
 
 function App() {
-  const count = useSelector((state) => state.counter.value);
-  const dispatch = useDispatch();
+  const selectedViews = useSelector((state) => state.views);
 
   return (
-    <div>
-      <h1>Counter: {count}</h1>
-      <button onClick={() => dispatch(increment())}>Increment</button>
-      <button onClick={() => dispatch(decrement())}>Decrement</button>
-      <button onClick={() => dispatch(incrementByAmount(5))}>Increment by 5</button>
-    </div>
+    <Box sx={{ flexGrow: 1, p: 2 }}>
+      <Box sx={{ mb: 3 }}>
+        <Link sx={{ cursor: 'pointer', textDecoration: 'none' }}>
+          <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold' }}>
+            Dashboard
+          </Typography>
+        </Link>
+      </Box>
+
+      {/* Filters 컴포넌트 */}
+      <Filters />
+
+      {/* TestControls 컴포넌트 추가 */}
+      <TestControls />
+
+      <Grid container spacing={2}>
+        {selectedViews.lunar && (
+          <Grid item xs={12}>
+            <LunarDate />
+          </Grid>
+        )}
+        {selectedViews.oil && (
+          <Grid item xs={12}>
+            <OilPrices />
+          </Grid>
+        )}
+        {selectedViews.exchange && (
+          <Grid item xs={12}>
+            <ExchangeRates />
+          </Grid>
+        )}
+      </Grid>
+    </Box>
   );
 }
 
